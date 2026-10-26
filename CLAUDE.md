@@ -10,12 +10,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Install: `uv sync`
 - All tests: `uv run pytest`
-- One test: `uv run pytest day01/test_smoke.py::test_smoke`
+- One test: `uv run pytest day01/test_chat_core.py::test_parse_command`
 - Lint: `uv run ruff check .` (add `--fix` to apply fixes)
 - Format: `uv run ruff format .`
 - Add a dependency: `uv add <pkg>` (use `uv add --dev <pkg>` for dev tools)
 
-Pytest collects from the repo root, so test files in any `dayNN/` folder are found.
+Pytest collects from the repo root, so test files in any `dayNN/` folder are found. Kata scripts that call the API run with `uv run --env-file .env python dayNN/<script>.py`. Pytest puts each test file's folder on `sys.path`, so a kata can import its own modules directly, but test file and module names must be unique across days.
 
 ## Conventions
 

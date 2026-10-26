@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 01 Code Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: one reading column, code and diagrams may scroll sideways inside their own box.
+     Tone: a clear technical handbook. Atkinson Hyperlegible was made for easy reading. */
+  :root {
+    --bg: #f3f5f8;
+    --surface: #ffffff;
+    --ink: #172033;
+    --muted: #55607a;
+    --line: #d5dbe6;
+    --accent: #0b6e8f;
+    --accent-soft: #dff1f7;
+    --code-bg: #121a2b;
+    --code-ink: #e3e9f5;
+    --code-dim: #8d9ab8;
+    --good: #1c7a4b;
+    --warn: #9a5b00;
+    --warn-soft: #fbefd9;
+    --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1522;
+      --surface: #171f31;
+      --ink: #e6ebf5;
+      --muted: #9aa6c0;
+      --line: #2a3550;
+      --accent: #5cc3e3;
+      --accent-soft: #14303c;
+      --code-bg: #0a0f1a;
+      --code-ink: #e3e9f5;
+      --code-dim: #7f8cab;
+      --good: #5fcf91;
+      --warn: #f0b45a;
+      --warn-soft: #33270f;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1522;
+    --surface: #171f31;
+    --ink: #e6ebf5;
+    --muted: #9aa6c0;
+    --line: #2a3550;
+    --accent: #5cc3e3;
+    --accent-soft: #14303c;
+    --code-bg: #0a0f1a;
+    --code-ink: #e3e9f5;
+    --code-dim: #7f8cab;
+    --good: #5fcf91;
+    --warn: #f0b45a;
+    --warn-soft: #33270f;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 32px 72px;
+  }
+  main { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+  section { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  h1, h2, h3 { line-height: 1.2; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(2rem, 6vw, 2.8rem); letter-spacing: -0.01em; }
+  h2 { font-size: 1.55rem; padding-top: 8px; border-top: 2px solid var(--ink); }
+  h3 { font-size: 1.1rem; }
+  p { margin: 0; max-width: 65ch; }
+  a { color: var(--accent); }
+  ul, ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; max-width: 65ch; }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+    overflow-wrap: anywhere;
+  }
+  .lede { font-size: 1.15rem; color: var(--muted); }
+  .eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .head { display: flex; flex-direction: column; gap: 14px; }
+
+  /* code blocks */
+  .code { background: var(--code-bg); border-radius: 8px; overflow: hidden; min-width: 0; }
+  .code .where {
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--code-dim);
+    padding: 8px 14px; border-bottom: 1px solid #ffffff1a;
+  }
+  .code pre { margin: 0; padding: 14px; overflow-x: auto; }
+  .code pre code {
+    background: none; padding: 0; border-radius: 0; color: var(--code-ink);
+    font-size: 0.82rem; line-height: 1.55; overflow-wrap: normal; white-space: pre;
+  }
+  .code .hl { background: #5cc3e326; display: inline-block; width: 100%; }
+
+  /* file table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; }
+  th, td { text-align: left; padding: 10px 14px; vertical-align: top; border-bottom: 1px solid var(--line); }
+  th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { font-family: var(--font-mono); font-size: 0.85rem; white-space: nowrap; }
+
+  /* history growth */
+  .growth { display: flex; flex-direction: column; gap: 10px; }
+  .request { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .request .label { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 0.9rem; }
+  .request .label b { font-weight: 700; }
+  .request .label span { color: var(--muted); font-family: var(--font-mono); font-size: 0.82rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-family: var(--font-mono); font-size: 0.78rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); }
+  .chip.user { background: var(--accent-soft); border-color: transparent; }
+  .chip.bot { background: var(--bg); }
+  .chip.system { border-style: dashed; color: var(--muted); }
+
+  /* steps: a real sequence, so numbered */
+  .steps { list-style: none; padding: 0; counter-reset: step; display: flex; flex-direction: column; gap: 28px; max-width: none; }
+  .steps > li { counter-increment: step; display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 4px 14px; }
+  .steps > li::before {
+    content: counter(step); grid-row: 1 / span 3;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-weight: 700;
+  }
+  .steps > li > * { grid-column: 2; min-width: 0; }
+  .steps h3 { align-self: center; }
+  .steps li > div.body { display: flex; flex-direction: column; gap: 12px; }
+
+  .note { background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 4px; padding: 12px 14px; max-width: 65ch; }
+  .note b { color: var(--warn); }
+  .tip { background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 4px; padding: 12px 14px; max-width: 65ch; }
+
+  .diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow-x: auto; }
+
+  dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  dt { font-weight: 700; }
+  dd { margin: 2px 0 0; color: var(--muted); max-width: 65ch; }
+  @media (min-width: 640px) {
+    dl { grid-template-columns: 180px minmax(0, 1fr); gap: 14px 24px; }
+    dd { margin: 0; }
+  }
+
+  details { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; }
+  details + details { margin-top: 0; }
+  summary { cursor: pointer; font-weight: 700; }
+  summary:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  details .inner { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  .predict { color: var(--muted); }
+  .predict b { color: var(--ink); }
+
+  footer { color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+
+</head>
+<body>
+<main>
+  <header class="head">
+    <span class="eyebrow">ai-katas · day 01 · kata 1A</span>
+    <h1>How the chat code works</h1>
+    <p class="lede">A walk through the streaming chat CLI. We follow one message from the moment you press Enter until the cost line appears. Reading time: about 10 minutes.</p>
+  </header>
+
+  <section>
+    <h2>The five files</h2>
+    <p>The code is small on purpose. The files are split in one way that matters: code that talks to the network is in <code>chat.py</code>, and code that needs no network is in <code>chat_core.py</code>. The tests can check the second kind without spending money.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>File</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>chat.py</td><td>The chat loop, the streaming call, and the commands. It prints to the screen.</td></tr>
+          <tr><td>chat_core.py</td><td>Prices, cost math, command parsing, error messages, and the <code>costs.md</code> row. No network.</td></tr>
+          <tr><td>system_prompt.md</td><td>The text that makes the model act as a requirements analyst. You can edit it.</td></tr>
+          <tr><td>compare.py</td><td>Sends one fixed prompt to Haiku, Sonnet and Opus and prints the cost of each.</td></tr>
+          <tr><td>test_chat_core.py</td><td>Nine tests for <code>chat_core.py</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>The one idea to understand first</h2>
+    <p>The API has no memory. Each request is a new start. If you want the model to remember the first message, you must send the first message again, together with the reply and your new message.</p>
+    <p>So the program itself must keep the conversation. It does this in one list, <code>Session.history</code>. Every request sends the whole list. This is what the three requests of a short chat look like:</p>
+    <div class="growth" aria-label="How the history grows with each request">
+      <div class="request">
+        <div class="label"><b>Request 1</b><span>367 input tokens</span></div>
+        <div class="chips"><span class="chip system">system prompt</span><span class="chip user">you: idea</span></div>
+      </div>
+      <div class="request">
+        <div class="label"><b>Request 2</b><span>440 input tokens</span></div>
+        <div class="chips"><span class="chip system">system prompt</span><span class="chip user">you: idea</span><span class="chip bot">analyst: question</span><span class="chip user">you: answer</span></div>
+      </div>
+      <div class="request">
+        <div class="label"><b>Request 3</b><span>526 input tokens</span></div>
+        <div class="chips"><span class="chip system">system prompt</span><span class="chip user">you: idea</span><span class="chip bot">analyst: question</span><span class="chip user">you: answer</span><span class="chip bot">analyst: question</span><span class="chip user">you: answer</span></div>
+      </div>
+    </div>
+    <p>The token numbers come from my test chat. They grow with every turn, and you pay for them every time. The system prompt is not part of <code>history</code>. It is a separate parameter, so it is never mixed with the messages.</p>
+    <div class="tip">A useful result: you can change the model in the middle of a chat. The new model just receives the same list.</div>
+  </section>
+
+  <section>
+    <h2>One turn, from Enter to the cost line</h2>
+    <p>Here is the path in time. The numbered steps below match the arrows.</p>
+    <div class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  participant U as You
+  participant M as main loop
+  participant T as run_turn
+  participant H as session.history
+  participant A as Claude API
+  U->>M: types a message
+  M->>T: not a command, so call run_turn
+  T->>H: append your message
+  T->>A: stream(model, system, history)
+  A-->>T: text arrives in small pieces
+  T-->>U: print each piece at once
+  A-->>T: final message with usage and stop_reason
+  T->>H: append the reply
+  T-->>U: print tokens and USD
+</pre>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>The loop reads a line</h3>
+        <div class="body">
+          <p>The loop waits for input. A line that does not start with <code>/</code> is chat text. <code>parse_command</code> returns <code>None</code> for it, and the loop calls <code>run_turn</code>.</p>
+          <div class="code"><div class="where">chat.py · lines 133–143</div><pre><code>while True:
+    try:
+        line = input("\nyou> ").strip()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        break
+    if not line:
+        continue
+    command = parse_command(line)
+    if command is None:
+        run_turn(client, session, line)</code></pre></div>
+          <p>Ctrl-D or Ctrl-C at the prompt leaves the loop. The <code>finally</code> block at the end of <code>main</code> still runs, so the costs are saved.</p>
+        </div>
+      </li>
+
+      <li>
+        <h3>Add your message to the history</h3>
+        <div class="body">
+          <p>The first line of <code>run_turn</code> puts your text into the list, in the format the API expects: a role and a content.</p>
+          <div class="code"><div class="where">chat.py · line 42</div><pre><code>session.history.append({"role": "user", "content": user_text})</code></pre></div>
+        </div>
+      </li>
+
+      <li>
+        <h3>Open the stream</h3>
+        <div class="body">
+          <p>This is the real API call. Each parameter has one job:</p>
+          <div class="code"><div class="where">chat.py · lines 45–51</div><pre><code>with client.messages.stream(
+    model=session.model,
+    max_tokens=MAX_TOKENS,
+    system=SYSTEM_PROMPT,
+    messages=session.history,
+    output_config={"effort": EFFORT},
+) as stream:</code></pre></div>
+          <dl>
+            <dt><code>model</code></dt><dd>Which model answers. <code>/model</code> changes this value in the session.</dd>
+            <dt><code>max_tokens</code></dt><dd>The longest reply allowed. It is 8000. The hidden thinking of the model counts inside this limit.</dd>
+            <dt><code>system</code></dt><dd>The persona, read once from <code>system_prompt.md</code>.</dd>
+            <dt><code>messages</code></dt><dd>The whole history. This is the "no memory" idea in one line.</dd>
+            <dt><code>effort</code></dt><dd>How much the model thinks. It is "medium" for all models, so the price comparison is fair.</dd>
+          </dl>
+          <p>The <code>with</code> block closes the connection for you, even when an error happens.</p>
+        </div>
+      </li>
+
+      <li>
+        <h3>Print the text while it arrives</h3>
+        <div class="body">
+          <p>Streaming means the API sends the reply in small pieces. The loop prints each piece at once, with <code>flush=True</code> so the terminal does not wait. Then <code>get_final_message()</code> gives the complete message, which has the token counts.</p>
+          <div class="code"><div class="where">chat.py · lines 52–54</div><pre><code>for text in stream.text_stream:
+    print(text, end="", flush=True)
+message = stream.get_final_message()</code></pre></div>
+        </div>
+      </li>
+
+      <li>
+        <h3>If the request fails, undo the turn</h3>
+        <div class="body">
+          <p>Two things can go wrong: you press Ctrl-C, or the API returns an error. In both cases the code removes your message from the history with <code>pop()</code>. Without this, the history would hold a question that has no answer.</p>
+          <div class="code"><div class="where">chat.py · lines 55–62</div><pre><code>except KeyboardInterrupt:
+    session.history.pop()
+    print("\n[interrupted: this turn was dropped]")
+    return
+except anthropic.APIError as exc:
+    session.history.pop()
+    print(f"\n[error] {describe_error(exc)}")
+    return</code></pre></div>
+          <p><code>describe_error</code> turns the SDK exception into one clear line. It checks the most specific class first. For example, a timeout is a kind of connection error, so it is tested before the general connection error.</p>
+          <div class="code"><div class="where">chat_core.py · lines 96–99</div><pre><code>if isinstance(exc, anthropic.APITimeoutError):
+    return "The request took too long. Try again."
+if isinstance(exc, anthropic.APIConnectionError):
+    return "Cannot reach the API. Check your network."</code></pre></div>
+        </div>
+      </li>
+
+      <li>
+        <h3>Count the tokens and the money</h3>
+        <div class="body">
+          <p>The message has a <code>usage</code> field with the real token counts. <code>session.record</code> adds them to the total of that model and returns the cost of this turn. The cost is the tokens times the price per million tokens.</p>
+          <div class="code"><div class="where">chat.py · line 64 &nbsp;and&nbsp; chat_core.py · lines 23–25</div><pre><code>usd = session.record(session.model, message.usage.input_tokens, message.usage.output_tokens)
+
+def cost_usd(model, tokens_in, tokens_out):
+    price_in, price_out = PRICES[model]
+    return (tokens_in * price_in + tokens_out * price_out) / 1_000_000</code></pre></div>
+          <p>The totals are kept for each model. That is why a chat that uses two models can write one correct line to <code>costs.md</code>.</p>
+        </div>
+      </li>
+
+      <li>
+        <h3>Check why the model stopped, then keep the reply</h3>
+        <div class="body">
+          <p>Always read <code>stop_reason</code> before you trust the content. Here there are three cases.</p>
+          <div class="code"><div class="where">chat.py · lines 65–75</div><pre><code>text = final_text(message)
+if message.stop_reason == "refusal":
+    session.history.pop()
+    print("\n[the model refused this request: this turn was dropped]")
+elif not text:
+    session.history.pop()
+    print("\n[the model returned no text: this turn was dropped]")
+else:
+    session.history.append({"role": "assistant", "content": text})
+    if message.stop_reason == "max_tokens":
+        print("\n[warning: the reply was cut because it hit the token limit]")</code></pre></div>
+          <ul>
+            <li><b>refusal:</b> the model said no. We drop your message so the next try starts clean.</li>
+            <li><b>no text:</b> nothing to show. We drop the turn too.</li>
+            <li><b>normal:</b> we save only the text of the reply in the history. A cut reply (<code>max_tokens</code>) is kept, with a warning.</li>
+          </ul>
+          <p><code>final_text</code> joins the text blocks and ignores other block types, such as thinking. This is also why the history holds plain text: a model switch cannot break on thinking blocks from another model.</p>
+        </div>
+      </li>
+
+      <li>
+        <h3>Print the cost line</h3>
+        <div class="body">
+          <div class="code"><div class="where">chat.py · lines 76–79</div><pre><code>print(
+    f"\n[{short_name(session.model)} | in {message.usage.input_tokens} | "
+    f"out {message.usage.output_tokens} | ${usd:.4f} | session ${session.session_usd():.4f}]"
+)</code></pre></div>
+          <p>The turn is finished. The loop goes back to step 1.</p>
+        </div>
+      </li>
+
+      <li>
+        <h3>When you leave, write one line to costs.md</h3>
+        <div class="body">
+          <p>The <code>finally</code> block of <code>main</code> calls <code>save_costs</code>. It builds one table row from the totals and appends it to the file. If you sent no message, nothing is written.</p>
+          <div class="code"><div class="where">chat.py · lines 114–118</div><pre><code>def save_costs(session):
+    if not session.totals:
+        return
+    append_costs_row(COSTS_FILE, costs_row("01", "1A streaming chat CLI", session.totals))</code></pre></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The three commands that are not chat</h2>
+    <dl>
+      <dt><code>/model</code></dt>
+      <dd>Changes <code>session.model</code>. It does not touch the history. Names like <code>haiku</code> are turned into full IDs by <code>resolve_model</code>.</dd>
+      <dt><code>/count text</code></dt>
+      <dd>Asks the API how many tokens the next request would have, without sending it. It builds a new list with <code>session.history + [...]</code>, so your real history is not changed. It needs the text because the history ends with a reply, and a request should end with a user message.</dd>
+      <dt><code>/summary</code></dt>
+      <dd>Not special for the API. It is a normal turn with a fixed text: "Please write the requirements summary now". The system prompt tells the model what format to use.</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Words in this code</h2>
+    <dl>
+      <dt>Token</dt><dd>A piece of text, often a short word or part of a word. The API counts and charges by tokens.</dd>
+      <dt>Stateless</dt><dd>The server keeps nothing between requests. Your program keeps the state.</dd>
+      <dt>System prompt</dt><dd>Instructions for the model that come before the chat. They set the role and the rules.</dd>
+      <dt>Stream</dt><dd>Receiving the reply in pieces while the model writes, not all at the end.</dd>
+      <dt>Effort</dt><dd>A setting for how much the model thinks. Thinking tokens are charged as output tokens, and you cannot see them by default.</dd>
+      <dt><code>stop_reason</code></dt><dd>Why the reply ended: <code>end_turn</code> (finished), <code>max_tokens</code> (cut), <code>refusal</code> (declined).</dd>
+      <dt>Dataclass</dt><dd>A short way to write a class that only holds data. <code>Session</code> and <code>Totals</code> are dataclasses.</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Try it yourself</h2>
+    <p>Reading is not enough. Each experiment below is small. Make a guess first, then run it, then open the box.</p>
+
+    <details>
+      <summary>1. Print what the API really receives</summary>
+      <div class="inner">
+        <p class="predict"><b>Do this:</b> add <code>import json</code> at the top of <code>chat.py</code>, and this line just before the <code>with</code> block in <code>run_turn</code>:</p>
+        <div class="code"><pre><code>print(json.dumps(session.history, indent=2))</code></pre></div>
+        <p class="predict"><b>Guess first:</b> after three turns, how many items are in the list?</p>
+        <p><b>Answer:</b> five before the third reply: your message, the reply, your message, the reply, your message. The system prompt does not appear, because it is a separate parameter.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>2. Break the undo on purpose</summary>
+      <div class="inner">
+        <p class="predict"><b>Do this:</b> comment out the <code>session.history.pop()</code> in the <code>APIError</code> branch. Run the chat with a bad key: <code>ANTHROPIC_API_KEY=sk-ant-bad uv run python day01/chat.py</code>. Send two messages, with the print from experiment 1 active.</p>
+        <p class="predict"><b>Guess first:</b> what does the history look like after the two failed messages?</p>
+        <p><b>Answer:</b> it holds two user messages and no replies. With a good key, the model would read them as one confused turn. This is why the code removes a turn that failed. Put the line back after the test.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>3. Change how much the model thinks</summary>
+      <div class="inner">
+        <p class="predict"><b>Do this:</b> in <code>chat.py</code>, change <code>EFFORT = "medium"</code> to <code>"low"</code>. Run <code>uv run --env-file .env python day01/compare.py</code>. The run adds a line to <code>costs.md</code>, which you can remove if you do not want it.</p>
+        <p class="predict"><b>Guess first:</b> which column changes, tokens in or tokens out? And for which model do you expect the biggest change?</p>
+        <p><b>Answer:</b> I did not run this one, so I cannot give you the numbers. Compare with the table in the day 01 README. The input column should stay the same, because the prompt is the same.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>4. Switch model in the middle of a chat</summary>
+      <div class="inner">
+        <p class="predict"><b>Do this:</b> send two messages with Haiku. Then type <code>/model opus</code>, and use <code>/count</code> with a short text. Switch back with <code>/model haiku</code> and use <code>/count</code> with the same text.</p>
+        <p class="predict"><b>Guess first:</b> will the two counts be the same?</p>
+        <p><b>Answer:</b> the history is identical, but the count is made by the chosen model, and models can count tokens in slightly different ways. Write down what you see. It is a real fact about these models, and good for your notes.</p>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <h2>What this code does not do yet</h2>
+    <p>Good to know before you build on it:</p>
+    <div class="note">
+      <ul>
+        <li><b>Lost cost on failures.</b> If a stream breaks halfway, you may be charged for the tokens already made, but the code does not record them. The error path skips <code>session.record</code>.</li>
+        <li><b>No limit on the history.</b> A very long chat sends everything every time. The cost grows and the context window can fill.</li>
+        <li><b>Network code is not tested.</b> The nine tests cover <code>chat_core.py</code>. <code>run_turn</code> and <code>run_count</code> were checked by hand with a real chat.</li>
+        <li><b>Prices are copied, not read live.</b> They come from a price table cached on 2026-10-06. Check them again before you trust the USD numbers later.</li>
+        <li><b>Hidden thinking.</b> You pay for thinking tokens but do not see them, so output tokens can be much larger than the visible text.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>Source: <code>day01/</code> in the ai-katas repo. Line numbers match the files on the day this page was written.</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "default" });</script>
+</body>
+</html>
