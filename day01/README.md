@@ -4,7 +4,7 @@ A terminal chat with a requirements analyst. You describe a project idea, and th
 
 The goal was to use the raw Messages API before any framework: no memory on the server side, a system prompt, streaming, and token usage.
 
-A step-by-step explanation of the code is in [code-tour.html](code-tour.html). Download it and open it in a browser.
+A step-by-step explanation of the code is in [code-tour.html](code-tour.html). Download it and open it in a browser. A real session is in [example-conversation.md](example-conversation.md).
 
 ## Run it
 
