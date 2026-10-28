@@ -1,0 +1,13 @@
+{
+  "title": "Unknown",
+  "key_points": [
+    "The PDF contains one page.",
+    "The page appears to be blank, with no visible text or images.",
+    "No title, people, organizations, places, or dates can be identified."
+  ],
+  "entities": [],
+  "confidence": "low",
+  "unclear_sections": [
+    "The document is a single page that appears completely blank. It has no readable text, so it is either empty or unreadable."
+  ]
+}

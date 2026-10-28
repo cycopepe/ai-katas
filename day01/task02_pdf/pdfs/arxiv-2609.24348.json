@@ -1,0 +1,46 @@
+{
+  "title": "A Lean and Spec-Driven AI-Assisted Software Development Lifecycle for Applied AI Education: The AI-SDLC Approach",
+  "key_points": [
+    "The paper proposes AI-SDLC, a lightweight six-phase lifecycle (Bootstrap, Specify, Design, Develop, Validate, Deploy) for governed AI-assisted software development, using AGENTS.md, SKILL.md files, specifications, and task documents as repository-local guidance.",
+    "AI-SDLC was applied in the FHNW course AI-assisted Software Development, and a descriptive cross-sectional survey of 13 students (from 34 invited) rated it positively, especially for structuring work and clarifying requirements.",
+    "Repository-local instruction files were judged helpful, but respondents' free-text accounts showed they sometimes failed, grew too large, or required ongoing maintenance.",
+    "Respondents reported confidence in generated code but low ability to follow it at any time; 11 of 13 described adopting code without fully understanding it, and verification relied more on running the software than on tests or pull requests.",
+    "Limitations include a small single-cohort sample, self-reported perceptions rather than observed outcomes, and little prior software engineering experience among respondents."
+  ],
+  "entities": [
+    {
+      "name": "FHNW University of Applied Sciences and Arts Northwestern Switzerland",
+      "kind": "organization"
+    },
+    {
+      "name": "Andreas Martin",
+      "kind": "person"
+    },
+    {
+      "name": "Sandro Schwander",
+      "kind": "person"
+    },
+    {
+      "name": "AI-assisted Software Development",
+      "kind": "other"
+    },
+    {
+      "name": "Business Artificial Intelligence",
+      "kind": "other"
+    },
+    {
+      "name": "Olten",
+      "kind": "place"
+    },
+    {
+      "name": "Zenodo",
+      "kind": "organization"
+    },
+    {
+      "name": "34 invited students, 13 complete responses",
+      "kind": "amount"
+    }
+  ],
+  "confidence": "high",
+  "unclear_sections": []
+}

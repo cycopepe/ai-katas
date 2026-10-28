@@ -1,6 +1,6 @@
 """Day 01, kata 1A: a streaming chat CLI on the raw Messages API.
 
-Run: uv run --env-file .env python day01/chat.py
+Run: uv run --env-file .env python day01/task01_chat/chat.py
 """
 
 import os
@@ -25,7 +25,7 @@ from chat_core import (
 HERE = Path(__file__).parent
 # The persona lives in a text file, so you can change it without touching the code.
 SYSTEM_PROMPT = (HERE / "system_prompt.md").read_text().strip()
-COSTS_FILE = HERE.parent / "costs.md"
+COSTS_FILE = HERE.parent.parent / "costs.md"
 # The longest reply allowed. The hidden thinking of the model also counts inside this limit.
 MAX_TOKENS = 8000
 EFFORT = "medium"  # the same on every model, so costs are comparable
@@ -138,7 +138,7 @@ def main() -> int:
     key = os.environ.get("ANTHROPIC_API_KEY", "")
     if not key or "REPLACE_ME" in key:
         print("Set a real ANTHROPIC_API_KEY in .env, then run:")
-        print("  uv run --env-file .env python day01/chat.py")
+        print("  uv run --env-file .env python day01/task01_chat/chat.py")
         return 1
 
     client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from the environment

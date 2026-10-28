@@ -1,6 +1,6 @@
 """Run one fixed prompt on all three models and compare the cost.
 
-Run: uv run --env-file .env python day01/compare.py
+Run: uv run --env-file .env python day01/task01_chat/compare.py
 """
 
 import sys

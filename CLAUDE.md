@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Install: `uv sync`
 - All tests: `uv run pytest`
-- One test: `uv run pytest day01/test_chat_core.py::test_parse_command`
+- One test: `uv run pytest day01/task01_chat/test_chat_core.py::test_parse_command`
 - Lint: `uv run ruff check .` (add `--fix` to apply fixes)
 - Format: `uv run ruff format .`
 - Add a dependency: `uv add <pkg>` (use `uv add --dev <pkg>` for dev tools)

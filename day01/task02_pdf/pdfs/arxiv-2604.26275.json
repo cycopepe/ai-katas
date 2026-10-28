@@ -1,0 +1,102 @@
+{
+  "title": "Agentic AI in the Software Development Lifecycle: Architecture, Empirical Evidence, and the Reshaping of Software Engineering",
+  "key_points": [
+    "Agentic AI systems operate at the level of repositories, features, or algorithms, a shift from earlier line- or function-level code completion tools like GitHub Copilot.",
+    "The paper proposes a six-layer reference architecture (L0–L5) for agentic software engineering systems and contrasts the traditional SDLC with an Agentic SDLC (A-SDLC).",
+    "SWE-bench Verified resolution rates rose from 1.96% (October 2023) to 78.4% (April 2026) according to the paper, while non-agentic RAG systems plateaued near 20%.",
+    "Reported productivity gains range from 13.6% to 55.8% across controlled studies, and 49% of jobs in Anthropic's sample saw Claude used for at least a quarter of their tasks.",
+    "The paper argues the central object of inquiry has shifted from code generation to delegated execution under human supervision, and identifies five open problems: evaluation, governance, technical debt, skill redistribution, and the economics of attention."
+  ],
+  "entities": [
+    {
+      "name": "Happy Bhati",
+      "kind": "person"
+    },
+    {
+      "name": "Northeastern University",
+      "kind": "organization"
+    },
+    {
+      "name": "Boston, Massachusetts, USA",
+      "kind": "place"
+    },
+    {
+      "name": "Anthropic",
+      "kind": "organization"
+    },
+    {
+      "name": "OpenAI",
+      "kind": "organization"
+    },
+    {
+      "name": "Google DeepMind",
+      "kind": "organization"
+    },
+    {
+      "name": "Microsoft Research",
+      "kind": "organization"
+    },
+    {
+      "name": "Princeton",
+      "kind": "organization"
+    },
+    {
+      "name": "Stanford",
+      "kind": "organization"
+    },
+    {
+      "name": "Cognition",
+      "kind": "organization"
+    },
+    {
+      "name": "SWE-bench Verified",
+      "kind": "other"
+    },
+    {
+      "name": "October 2023",
+      "kind": "date"
+    },
+    {
+      "name": "April 2026",
+      "kind": "date"
+    },
+    {
+      "name": "GitHub Copilot",
+      "kind": "other"
+    },
+    {
+      "name": "Claude Code",
+      "kind": "other"
+    },
+    {
+      "name": "AlphaEvolve",
+      "kind": "other"
+    },
+    {
+      "name": "Devin",
+      "kind": "other"
+    },
+    {
+      "name": "SWE-agent",
+      "kind": "other"
+    },
+    {
+      "name": "OpenHands",
+      "kind": "other"
+    },
+    {
+      "name": "MetaGPT",
+      "kind": "other"
+    },
+    {
+      "name": "ChatDev",
+      "kind": "other"
+    }
+  ],
+  "confidence": "high",
+  "unclear_sections": [
+    "Figure 5 (capability–autonomy plane) has overlapping labels for Codex CLI and Jules, and the Claude label is cut off at the page edge, making some positions hard to read.",
+    "Some figure and table values (such as Table 2 SWE-bench percentages) are marked as approximate in the source, and the paper's Figure 2 and Figure 3 labels are small and partly obscured.",
+    "Several cited sources are described as preprints or company reports (e.g., Anthropic model card, OpenAI technical overview), so their claims could not be independently verified from the document alone."
+  ]
+}

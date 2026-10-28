@@ -6,7 +6,7 @@ Small daily exercises with the Claude API. Each day has its own folder (`day01`,
 
 | Day | Kata | Notes |
 |-----|------|-------|
-| 01  | [Streaming chat CLI](day01/README.md) | Requirements analyst, `/model`, `/count`, cost per turn |
+| 01  | [Streaming chat CLI and PDF to JSON](day01/README.md) | 1A: requirements analyst, `/model`, `/count`, cost per turn. 1B: PDF in, Pydantic-validated JSON out |
 
 ## Setup
 

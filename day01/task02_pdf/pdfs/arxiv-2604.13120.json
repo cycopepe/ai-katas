@@ -1,0 +1,76 @@
+{
+  "title": "AgentForge: Execution-Grounded Multi-Agent LLM Framework for Autonomous Software Engineering",
+  "key_points": [
+    "AgentForge is a multi-agent LLM framework with five roles (Planner, Coder, Tester, Debugger, Critic) that requires every code change to pass sandboxed Docker execution before propagation.",
+    "The framework uses dual retrieval: episodic memory of past solved tasks and a live repository index of the current codebase, both stored in ChromaDB.",
+    "AgentForge reports 40.0% resolution on SWE-bench Lite (300 tasks), versus 14.0% for a single-agent GPT-4o baseline, 12.0% for ReAct, and 18.1% for SWE-agent (published result).",
+    "Ablations on 100 tasks show removing any agent reduces resolve rate, with the Tester and Debugger contributing the largest gains and the full pipeline at 42.0%.",
+    "Error analysis of 30 failed tasks attributes most failures to faulty localization (40.0%), with ineffective patches, cognitive deadlocks, and environment issues making up the rest; the full pipeline costs about 2.7 times the single-agent baseline per task."
+  ],
+  "entities": [
+    {
+      "name": "AgentForge",
+      "kind": "other"
+    },
+    {
+      "name": "SWE-bench Lite",
+      "kind": "other"
+    },
+    {
+      "name": "GPT-4o",
+      "kind": "other"
+    },
+    {
+      "name": "ChromaDB",
+      "kind": "other"
+    },
+    {
+      "name": "Docker",
+      "kind": "other"
+    },
+    {
+      "name": "Rajesh Kumar",
+      "kind": "person"
+    },
+    {
+      "name": "Beihang University",
+      "kind": "organization"
+    },
+    {
+      "name": "Wenzhou-Kean University",
+      "kind": "organization"
+    },
+    {
+      "name": "Sukkur IBA University",
+      "kind": "organization"
+    },
+    {
+      "name": "University of Electronic Science and Technology of China",
+      "kind": "organization"
+    },
+    {
+      "name": "Hangzhou",
+      "kind": "place"
+    },
+    {
+      "name": "Django, Flask, scikit-learn, NumPy",
+      "kind": "other"
+    },
+    {
+      "name": "2026-04-13",
+      "kind": "date"
+    },
+    {
+      "name": "$43.35",
+      "kind": "amount"
+    }
+  ],
+  "confidence": "high",
+  "unclear_sections": [
+    "The Figure 4 caption describes resolution vs. retries, but its displayed values (about 28% to 40%) and the 'diminishing returns after N = 2' claim are only partly consistent with the text, which states 'diminishing returns beyond two retries'.",
+    "Figure 6 caption repeats the text of Figure 5 ('Resolve rates across ablation conditions') even though the figure shows error-type trajectories across debug iterations, so the caption does not match the figure.",
+    "Table II lists 40.0% for AgentForge under a 'fixed execution budget', while the ablation's full pipeline is 42.0% on a different 100-task subset, so the numbers are not directly comparable.",
+    "The Proposition 1 testable prediction (a 7B model with execution feedback beating a 70B model) is stated but not tested in the experiments.",
+    "The paper says the Critic verdict is binary, but the evaluation protocol and the 'Full pipeline' cost figures are not fully explained, and the ablation's 'w/o Debugger' value appears as 31 in Table III and 27.0% in Figure 5."
+  ]
+}

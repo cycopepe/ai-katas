@@ -10,7 +10,7 @@ Things to look at:
 - The log does not show a model switch. The shell prompt is shortened to `$`.
 
 ```
-$ uv run --env-file .env python day01/chat.py
+$ uv run --env-file .env python day01/task01_chat/chat.py
 Requirements analyst on claude-haiku-5-5. Type /help for commands.
 Describe your project idea to start.
 

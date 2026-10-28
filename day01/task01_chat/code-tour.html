@@ -242,7 +242,7 @@ sequenceDiagram
         <h3>The loop reads a line</h3>
         <div class="body">
           <p>The loop waits for input. A line that does not start with <code>/</code> is chat text. <code>parse_command</code> returns <code>None</code> for it, and the loop calls <code>run_turn</code>.</p>
-          <div class="code"><div class="where">chat.py · lines 133–143</div><pre><code>while True:
+          <div class="code"><div class="where">chat.py · lines 149–159</div><pre><code>while True:
     try:
         line = input("\nyou> ").strip()
     except (EOFError, KeyboardInterrupt):
@@ -261,7 +261,7 @@ sequenceDiagram
         <h3>Add your message to the history</h3>
         <div class="body">
           <p>The first line of <code>run_turn</code> puts your text into the list, in the format the API expects: a role and a content.</p>
-          <div class="code"><div class="where">chat.py · line 42</div><pre><code>session.history.append({"role": "user", "content": user_text})</code></pre></div>
+          <div class="code"><div class="where">chat.py · line 46</div><pre><code>session.history.append({"role": "user", "content": user_text})</code></pre></div>
         </div>
       </li>
 
@@ -269,7 +269,7 @@ sequenceDiagram
         <h3>Open the stream</h3>
         <div class="body">
           <p>This is the real API call. Each parameter has one job:</p>
-          <div class="code"><div class="where">chat.py · lines 45–51</div><pre><code>with client.messages.stream(
+          <div class="code"><div class="where">chat.py · lines 50–56</div><pre><code>with client.messages.stream(
     model=session.model,
     max_tokens=MAX_TOKENS,
     system=SYSTEM_PROMPT,
@@ -291,7 +291,7 @@ sequenceDiagram
         <h3>Print the text while it arrives</h3>
         <div class="body">
           <p>Streaming means the API sends the reply in small pieces. The loop prints each piece at once, with <code>flush=True</code> so the terminal does not wait. Then <code>get_final_message()</code> gives the complete message, which has the token counts.</p>
-          <div class="code"><div class="where">chat.py · lines 52–54</div><pre><code>for text in stream.text_stream:
+          <div class="code"><div class="where">chat.py · lines 58–61</div><pre><code>for text in stream.text_stream:
     print(text, end="", flush=True)
 message = stream.get_final_message()</code></pre></div>
         </div>
@@ -301,7 +301,7 @@ message = stream.get_final_message()</code></pre></div>
         <h3>If the request fails, undo the turn</h3>
         <div class="body">
           <p>Two things can go wrong: you press Ctrl-C, or the API returns an error. In both cases the code removes your message from the history with <code>pop()</code>. Without this, the history would hold a question that has no answer.</p>
-          <div class="code"><div class="where">chat.py · lines 55–62</div><pre><code>except KeyboardInterrupt:
+          <div class="code"><div class="where">chat.py · lines 64–71</div><pre><code>except KeyboardInterrupt:
     session.history.pop()
     print("\n[interrupted: this turn was dropped]")
     return
@@ -310,7 +310,7 @@ except anthropic.APIError as exc:
     print(f"\n[error] {describe_error(exc)}")
     return</code></pre></div>
           <p><code>describe_error</code> turns the SDK exception into one clear line. It checks the most specific class first. For example, a timeout is a kind of connection error, so it is tested before the general connection error.</p>
-          <div class="code"><div class="where">chat_core.py · lines 96–99</div><pre><code>if isinstance(exc, anthropic.APITimeoutError):
+          <div class="code"><div class="where">chat_core.py · lines 107–110</div><pre><code>if isinstance(exc, anthropic.APITimeoutError):
     return "The request took too long. Try again."
 if isinstance(exc, anthropic.APIConnectionError):
     return "Cannot reach the API. Check your network."</code></pre></div>
@@ -321,7 +321,7 @@ if isinstance(exc, anthropic.APIConnectionError):
         <h3>Count the tokens and the money</h3>
         <div class="body">
           <p>The message has a <code>usage</code> field with the real token counts. <code>session.record</code> adds them to the total of that model and returns the cost of this turn. The cost is the tokens times the price per million tokens.</p>
-          <div class="code"><div class="where">chat.py · line 64 &nbsp;and&nbsp; chat_core.py · lines 23–25</div><pre><code>usd = session.record(session.model, message.usage.input_tokens, message.usage.output_tokens)
+          <div class="code"><div class="where">chat.py · line 73 &nbsp;and&nbsp; chat_core.py · lines 24–27</div><pre><code>usd = session.record(session.model, message.usage.input_tokens, message.usage.output_tokens)
 
 def cost_usd(model, tokens_in, tokens_out):
     price_in, price_out = PRICES[model]
@@ -334,7 +334,7 @@ def cost_usd(model, tokens_in, tokens_out):
         <h3>Check why the model stopped, then keep the reply</h3>
         <div class="body">
           <p>Always read <code>stop_reason</code> before you trust the content. Here there are three cases.</p>
-          <div class="code"><div class="where">chat.py · lines 65–75</div><pre><code>text = final_text(message)
+          <div class="code"><div class="where">chat.py · lines 74–86</div><pre><code>text = final_text(message)
 if message.stop_reason == "refusal":
     session.history.pop()
     print("\n[the model refused this request: this turn was dropped]")
@@ -357,7 +357,7 @@ else:
       <li>
         <h3>Print the cost line</h3>
         <div class="body">
-          <div class="code"><div class="where">chat.py · lines 76–79</div><pre><code>print(
+          <div class="code"><div class="where">chat.py · lines 87–90</div><pre><code>print(
     f"\n[{short_name(session.model)} | in {message.usage.input_tokens} | "
     f"out {message.usage.output_tokens} | ${usd:.4f} | session ${session.session_usd():.4f}]"
 )</code></pre></div>
@@ -369,7 +369,7 @@ else:
         <h3>When you leave, write one line to costs.md</h3>
         <div class="body">
           <p>The <code>finally</code> block of <code>main</code> calls <code>save_costs</code>. It builds one table row from the totals and appends it to the file. If you sent no message, nothing is written.</p>
-          <div class="code"><div class="where">chat.py · lines 114–118</div><pre><code>def save_costs(session):
+          <div class="code"><div class="where">chat.py · lines 128–132</div><pre><code>def save_costs(session):
     if not session.totals:
         return
     append_costs_row(COSTS_FILE, costs_row("01", "1A streaming chat CLI", session.totals))</code></pre></div>
@@ -459,7 +459,7 @@ else:
     </div>
   </section>
 
-  <footer>Source: <code>day01/</code> in the ai-katas repo. Line numbers match the files on the day this page was written.</footer>
+  <footer>Source: <code>day01/task01_chat/</code> in the ai-katas repo. Line numbers match the files on the day this page was written.</footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({ startOnLoad: true, theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "default" });</script>

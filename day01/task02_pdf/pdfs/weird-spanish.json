@@ -1,0 +1,101 @@
+{
+  "title": "La cadena de valor de la inteligencia artificial: una perspectiva crítica / The artificial intelligence value chain: A critical appraisal",
+  "key_points": [
+    "The article analyses the role of the 'artificial intelligence value chain' concept in EU AI regulation, especially the AI Act, and in recent EU programmes (Compass for Competitiveness, AI Continent Action Plan, Apply AI Strategy, Digital Omnibus on AI).",
+    "It compares three legal approaches to AI regulation: the EU's holistic risk-based model, the principles-based UK/Commonwealth model (with Australia and Canada as mixed cases), and the US fragmented/sectoral model under recent presidential executive orders.",
+    "It traces the value chain concept to Porter's Competitive Advantage (1985), noting it was built for corporate strategy and that AI value chain versions tend to place ethical and legal aspects only among support activities.",
+    "The author argues for redefining the AI value chain to capture intangible, non-monetizable dimensions such as language, culture, and ethical and legal values, and proposes an ethical and legal value chain to preserve democratic values and the rule of law.",
+    "The article also addresses the relationship between AI and natural languages, and sets out its structure: sections on frameworks, value chain concepts, obstacles, the EU AI Act, EU innovation strategy, the ethical-legal chain, and language."
+  ],
+  "entities": [
+    {
+      "name": "Pompeu Casanovas",
+      "kind": "person"
+    },
+    {
+      "name": "IIIA-CSIC",
+      "kind": "organization"
+    },
+    {
+      "name": "Instituto de Derecho y Tecnología de la Universidad Autónoma de Barcelona (IDT-UAB)",
+      "kind": "organization"
+    },
+    {
+      "name": "La Trobe University",
+      "kind": "organization"
+    },
+    {
+      "name": "X Congreso de la Lengua Española",
+      "kind": "organization"
+    },
+    {
+      "name": "Arequipa",
+      "kind": "place"
+    },
+    {
+      "name": "Michael E. Porter",
+      "kind": "person"
+    },
+    {
+      "name": "European Union",
+      "kind": "organization"
+    },
+    {
+      "name": "United Kingdom",
+      "kind": "place"
+    },
+    {
+      "name": "Australia",
+      "kind": "place"
+    },
+    {
+      "name": "Canada",
+      "kind": "place"
+    },
+    {
+      "name": "United States",
+      "kind": "place"
+    },
+    {
+      "name": "Reglamento (UE) 2024/1689",
+      "kind": "other"
+    },
+    {
+      "name": "Digital Omnibus on AI",
+      "kind": "other"
+    },
+    {
+      "name": "13 de octubre de 2025",
+      "kind": "date"
+    },
+    {
+      "name": "18 de octubre de 2025",
+      "kind": "date"
+    },
+    {
+      "name": "1 de agosto de 2024",
+      "kind": "date"
+    },
+    {
+      "name": "2 de agosto de 2026",
+      "kind": "date"
+    },
+    {
+      "name": "19 de noviembre de 2025",
+      "kind": "date"
+    },
+    {
+      "name": "Draghi",
+      "kind": "person"
+    },
+    {
+      "name": "Letta",
+      "kind": "person"
+    }
+  ],
+  "confidence": "high",
+  "unclear_sections": [
+    "The text includes a few apparent typographical or citation inconsistencies (for example, the Japanese guidelines are dated 2028 in a footnote, and the section numbering in the introduction differs slightly from the contents list), which may be errors in the source.",
+    "The document is a partial excerpt ending mid-section 4, so the planned conclusions, the ethical-legal value chain framework, and the language section are described only in outline, not in full."
+  ]
+}
